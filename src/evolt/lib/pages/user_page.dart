@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const FigmaToCodeApp());
+  runApp(const UserPage());
 }
 
-class FigmaToCodeApp extends StatelessWidget {
-  const FigmaToCodeApp({super.key});
+class UserPage extends StatelessWidget {
+  const UserPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,14 +15,14 @@ class FigmaToCodeApp extends StatelessWidget {
       ),
       home: Scaffold(
         body: ListView(children: [
-          UserPage(),
+          UserPageContent(),
         ]),
       ),
     );
   }
 }
 
-class UserPage extends StatelessWidget {
+class UserPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -31,7 +31,7 @@ class UserPage extends StatelessWidget {
           width: 360,
           height: 800,
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(color: Color(0xFF322C39)),
+          decoration: const BoxDecoration(color: Color(0xFF322C39)),
           child: Stack(
             children: [
               Positioned(
@@ -65,7 +65,7 @@ class UserPage extends StatelessWidget {
                         child: Container(
                           width: 305,
                           height: 228,
-                          decoration:const ShapeDecoration(
+                          decoration: const ShapeDecoration(
                             color: Color(0xFFEFEEEC),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.only(
