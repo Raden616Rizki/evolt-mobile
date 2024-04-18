@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -53,7 +55,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const Positioned(
-                  left: 70,
+                  left: 60,
                   top: 130,
                   child: Text(
                     'HELLO, ',
@@ -67,7 +69,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 const Positioned(
-                  left: 190,
+                  left: 180,
                   top: 193,
                   child: Text(
                     '{Name}',
@@ -91,6 +93,110 @@ class _HomePageState extends State<HomePage> {
                       fontFamily: 'Microsoft Yahei UI',
                       fontWeight: FontWeight.w400,
                       height: 1.0,
+                    ),
+                  ),
+                ),
+                Positioned(
+                  left: 47,
+                  top: 434,
+                  child: SizedBox(
+                    width: 292,
+                    height: 64,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          left: 0,
+                          top: 0,
+                          child: Container(
+                            width: 292,
+                            height: 64,
+                            decoration: ShapeDecoration(
+                              color: const Color(0xFFEFEEEC),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 28,
+                          top: 6,
+                          child: Container(
+                            width: 259,
+                            height: 52,
+                            decoration: const ShapeDecoration(
+                              color: Color(0xFF609FA1),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(10),
+                                  topRight: Radius.circular(50),
+                                  bottomLeft: Radius.circular(10),
+                                  bottomRight: Radius.circular(50),
+                                ),
+                              ),
+                              shadows: [
+                                BoxShadow(
+                                  color: Color(0x3F000000),
+                                  blurRadius: 4,
+                                  offset: Offset(2, 4),
+                                  spreadRadius: 0,
+                                )
+                              ],
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 7,
+                          top: 6,
+                          child: SizedBox(
+                            width: 52,
+                            height: 52,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  left: 0,
+                                  top: 0,
+                                  child: Container(
+                                    width: 52,
+                                    height: 52,
+                                    decoration: const ShapeDecoration(
+                                      color: Color(0xFFC92C6C),
+                                      shape: OvalBorder(),
+                                    ),
+                                  ),
+                                ),
+                                Positioned(
+                                  left: 11.98,
+                                  top: 11.66,
+                                  child: Container(
+                                    width: 28.36,
+                                    height: 28.36,
+                                    clipBehavior: Clip.antiAlias,
+                                    decoration: const BoxDecoration(),
+                                    child: const Stack(
+                                      children: [],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        const Positioned(
+                          left: 151,
+                          top: 23,
+                          child: Text(
+                            'DOOR 1',
+                            style: TextStyle(
+                              color: Color(0xFFEFEEEC),
+                              fontSize: 14,
+                              fontFamily: 'Microsoft YaHei UI',
+                              fontWeight: FontWeight.w400,
+                              height: 0,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),
