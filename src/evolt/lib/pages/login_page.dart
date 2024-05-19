@@ -1,5 +1,23 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: const LoginPage(),
+      routes: {
+        '/home': (context) => const HomePage(), 
+      },
+    );
+  }
+}
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -13,11 +31,10 @@ class _LoginPageState extends State<LoginPage> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return MaterialApp(
-        home: SingleChildScrollView(
-      child: Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: Stack(
+    return Scaffold(
+      resizeToAvoidBottomInset: true,
+      body: SingleChildScrollView(
+        child: Stack(
           children: <Widget>[
             Container(
               color: const Color(0xFFEFEEEC),
@@ -135,6 +152,18 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
-    ));
+    );
+  }
+}
+
+class HomePage extends StatelessWidget {
+  const HomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Home Page')),
+      body: const Center(child: Text('Welcome to the Home Page')),
+    );
   }
 }

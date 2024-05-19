@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 
+void main() {
+  runApp(const UserPage());
+}
+
 class UserPage extends StatelessWidget {
   const UserPage({Key? key}) : super(key: key);
+  
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +58,18 @@ class UserPageContent extends StatelessWidget {
                               ),
                             ),
                           ),
+                          child: const Center(
+                            child: Text(
+                              'USER INFORMATION',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                                fontFamily: 'Leelawadee UI',
+                                fontWeight: FontWeight.w700,
+                                height: 0,
+                              ),
+                            ),
+                          ),
                         ),
                       ),
                       Positioned(
@@ -71,20 +88,6 @@ class UserPageContent extends StatelessWidget {
                                 bottomRight: Radius.circular(15),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      const Positioned(
-                        left: 93,
-                        top: 23,
-                        child: Text(
-                          'USER INFORMATION',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 12,
-                            fontFamily: 'Leelawadee UI',
-                            fontWeight: FontWeight.w700,
-                            height: 0,
                           ),
                         ),
                       ),
@@ -148,19 +151,17 @@ class UserPageContent extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                ),
-                              ),
-                              const Positioned(
-                                left: 12,
-                                top: 6,
-                                child: Text(
-                                  'EMAIL',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontFamily: 'Microsoft YaHei UI',
-                                    fontWeight: FontWeight.w400,
-                                    height: 0,
+                                  child: const Center(
+                                    child: Text(
+                                      'EMAIL',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontFamily: 'Microsoft YaHei UI',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -228,21 +229,16 @@ class UserPageContent extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                ),
-                              ),
-                              const Positioned(
-                                left: 12,
-                                top: 6,
-                                child: SizedBox(
-                                  width: 56,
-                                  child: Text(
-                                    'USERNAME',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontFamily: 'Microsoft YaHei UI',
-                                      fontWeight: FontWeight.w400,
-                                      height: 0,
+                                  child: const Center(
+                                    child: Text(
+                                      'USERNAME',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontFamily: 'Microsoft YaHei UI',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -254,7 +250,7 @@ class UserPageContent extends StatelessWidget {
                       Positioned(
                         left: 15,
                         top: 138,
-                        child: SizedBox(
+                        child: Container(
                           width: 275,
                           height: 24,
                           child: Stack(
@@ -311,19 +307,17 @@ class UserPageContent extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                ),
-                              ),
-                              const Positioned(
-                                left: 12,
-                                top: 6,
-                                child: Text(
-                                  'STATUS',
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontFamily: 'Microsoft YaHei UI',
-                                    fontWeight: FontWeight.w400,
-                                    height: 0,
+                                  child: const Center(
+                                    child: Text(
+                                      'STATUS',
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10,
+                                        fontFamily: 'Microsoft YaHei UI',
+                                        fontWeight: FontWeight.w400,
+                                        height: 0,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
@@ -347,19 +341,16 @@ class UserPageContent extends StatelessWidget {
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                ),
-              ),
-              const Positioned(
-                left: 150,
-                top: 464,
-                child: Text(
-                  'LOGOUT',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 14,
-                    fontFamily: 'Microsoft YaHei UI',
-                    fontWeight: FontWeight.w400,
-                    height: 0,
+                  child: const Center(
+                    child: Text(
+                      'LOGOUT',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'Microsoft YaHei UI',
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
                   ),
                 ),
               ),
@@ -373,7 +364,6 @@ class UserPageContent extends StatelessWidget {
                     fontSize: 9,
                     fontFamily: 'Microsoft YaHei UI',
                     fontWeight: FontWeight.w400,
-                    height: 0,
                   ),
                 ),
               ),
@@ -393,33 +383,20 @@ class UserPageContent extends StatelessWidget {
                           height: 96,
                           decoration: const ShapeDecoration(
                             color: Color(0xFF322C39),
-                            shape: OvalBorder(),
+                            shape: CircleBorder(),
                           ),
-                        ),
-                      ),
-                      Positioned(
-                        left: 0,
-                        top: 10,
-                        child: Container(
-                          width: 100,
-                          height: 100,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(),
-                          child: Stack(
-                            children: [
-                              Positioned(
-                                left: 32,
-                                top: 8,
-                                child: Container(
-                                  width: 60,
-                                  height: 60,
-                                  decoration: const ShapeDecoration(
-                                    color: Color(0xFFEFEEEC),
-                                    shape: OvalBorder(),
-                                  ),
+                          child: Center(
+                            child: Container(
+                              width: 100,
+                              height: 100,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                image: AssetImage('assets/Icon User.png'),
+                                fit: BoxFit.cover,
                                 ),
                               ),
-                            ],
+                            ),
                           ),
                         ),
                       ),
@@ -434,3 +411,4 @@ class UserPageContent extends StatelessWidget {
     );
   }
 }
+
