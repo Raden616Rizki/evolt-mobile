@@ -392,7 +392,7 @@ class UserPageContent extends StatelessWidget {
                               decoration: const BoxDecoration(
                                 shape: BoxShape.circle,
                                 image: DecorationImage(
-                                image: AssetImage('assets/Icon User.png'),
+                                image: AssetImage('assets/Icon Profile.png'),
                                 fit: BoxFit.cover,
                                 ),
                               ),

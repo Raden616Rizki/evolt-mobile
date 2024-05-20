@@ -2,8 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
+void main() {
+  runApp(const MaterialApp(
+    home: HomePage(),
+  ));
+}
+
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -15,11 +21,23 @@ class _HomePageState extends State<HomePage> {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Color(0xFFEFEEEC),
+        elevation: 0,
+        actions: [
+          IconButton(
+            icon: Image.asset('assets/Icon User.png'),
+            iconSize: 40.0,
+            onPressed: () {
+            },
+          ),
+        ],
+      ),
       body: Column(
         children: [
           Container(
             width: screenWidth,
-            height: screenHeight,
+            height: screenHeight - kToolbarHeight,
             clipBehavior: Clip.antiAlias,
             decoration: const BoxDecoration(
               color: Color(0xFF322C39),
