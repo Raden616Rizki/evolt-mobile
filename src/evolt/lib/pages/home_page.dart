@@ -29,6 +29,7 @@ class _HomePageState extends State<HomePage> {
             icon: Image.asset('assets/Icon User.png'),
             iconSize: 40.0,
             onPressed: () {
+              Navigator.of(context).pushNamed('/user');
             },
           ),
         ],
