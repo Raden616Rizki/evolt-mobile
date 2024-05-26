@@ -117,9 +117,12 @@ class _LoginPageState extends State<LoginPage> {
                       width: screenWidth * 0.37,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(16)),
-                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF609FA1)),
-                          shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.8)),
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.all(16)),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF609FA1)),
+                          shadowColor: MaterialStateProperty.all<Color>(
+                              Colors.black.withOpacity(0.8)),
                           elevation: MaterialStateProperty.all(5),
                         ),
                         onPressed: () {
