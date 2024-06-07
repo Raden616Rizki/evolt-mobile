@@ -16,7 +16,20 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   String dropdownValue = "PintuKu";
-  var items = ['PintuKu', 'PintuNya', 'PintuMu', 'PintuPintu'];
+  var items = [
+    'PintuKu',
+    'PintuNya',
+    'PintuMu',
+    'PintuPintu',
+    'Pintuuu',
+    'ABC'
+  ];
+  double myWidth = 0;
+  double translateX = 0.0;
+  double translateY = 0.0;
+
+  final int shortDuration = 200; // Duration for quick swipe right
+  final int longDuration = 500; // Duration for slow swipe back
 
   @override
   Widget build(BuildContext context) {
@@ -104,10 +117,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   const Positioned(
-                    left: 130,
-                    top: 391,
+                    left: 145,
+                    top: 535,
                     child: Text(
-                      'Slide to unlock door!',
+                      'Swipe to unlock door!',
                       style: TextStyle(
                         color: Color(0xFFEFEEEC),
                         fontSize: 14,
@@ -118,102 +131,77 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Positioned(
-                    left: 47,
-                    top: 420,
-                    child: SizedBox(
-                      width: 292,
-                      height: 64,
+                    left: 60.0,
+                    top: 565.0,
+                    width: 282.0,
+                    height: 64.0,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50.0),
+                        color: Colors.white,
+                      ),
                       child: Stack(
                         children: [
-                          Positioned(
-                            left: 0,
-                            top: 0,
-                            child: Container(
-                              width: 292,
-                              height: 64,
-                              decoration: ShapeDecoration(
-                                color: const Color(0xFFEFEEEC),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50),
+                          Positioned.fill(
+                            child: Padding(
+                              padding: const EdgeInsets.all(4.0),
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(50.0),
+                                  color: const Color(0xFFF070A4),
                                 ),
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 28,
-                            top: 6,
-                            child: Container(
-                              width: 259,
-                              height: 52,
-                              decoration: const ShapeDecoration(
-                                color: Color(0xFF609FA1),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(10),
-                                    topRight: Radius.circular(50),
-                                    bottomLeft: Radius.circular(10),
-                                    bottomRight: Radius.circular(50),
+                                child: GestureDetector(
+                                  onHorizontalDragUpdate: (event) async {
+                                    if (event.primaryDelta! > 10) {
+                                      _incTransXval();
+                                    } else if (event.primaryDelta! < -10) {
+                                      _decTransXval();
+                                    }
+                                  },
+                                  onHorizontalDragEnd: (event) async {
+                                    setState(() {
+                                      if (translateX >=
+                                          MediaQuery.of(context).size.width /
+                                              2) {
+                                        translateX =
+                                            MediaQuery.of(context).size.width -
+                                                209;
+                                        myWidth =
+                                            MediaQuery.of(context).size.width -
+                                                209;
+                                      } else {
+                                        translateX = 0.0;
+                                        myWidth = 0.0;
+                                      }
+                                    });
+                                    await Future.delayed(const Duration(
+                                        seconds: 1)); // delay for 1 second
+                                    setState(() {
+                                      translateX = 0.0;
+                                      myWidth = 0.0;
+                                    });
+                                  },
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      unlockSuccessfull(),
+                                      myWidth == 0.0
+                                          ? const Expanded(
+                                              child: Center(
+                                                child: Text(
+                                                  "Swipe to Unlock Door",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 17.0,
+                                                  ),
+                                                ),
+                                              ),
+                                            )
+                                          : const SizedBox(),
+                                    ],
                                   ),
                                 ),
-                                shadows: [
-                                  BoxShadow(
-                                    color: Color(0x3F000000),
-                                    blurRadius: 4,
-                                    offset: Offset(2, 4),
-                                    spreadRadius: 0,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                          Positioned(
-                            left: 7,
-                            top: 6,
-                            child: SizedBox(
-                              width: 52,
-                              height: 52,
-                              child: Stack(
-                                children: [
-                                  Positioned(
-                                    left: 0,
-                                    top: 0,
-                                    child: Container(
-                                      width: 52,
-                                      height: 52,
-                                      decoration: const ShapeDecoration(
-                                        color: Color(0xFFC92C6C),
-                                        shape: OvalBorder(),
-                                      ),
-                                    ),
-                                  ),
-                                  Positioned(
-                                    left: 11.98,
-                                    top: 11.66,
-                                    child: Container(
-                                      width: 28.36,
-                                      height: 28.36,
-                                      clipBehavior: Clip.antiAlias,
-                                      decoration: const BoxDecoration(),
-                                      child: const Stack(
-                                        children: [],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          const Positioned(
-                            left: 151,
-                            top: 23,
-                            child: Text(
-                              'DOOR 1',
-                              style: TextStyle(
-                                color: Color(0xFFEFEEEC),
-                                fontSize: 14,
-                                fontFamily: 'Microsoft YaHei UI',
-                                fontWeight: FontWeight.w400,
-                                height: 0,
                               ),
                             ),
                           ),
@@ -222,8 +210,9 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Positioned(
+                    // Positioned DropUpButton
                     left: 145,
-                    top: 520,
+                    bottom: 50,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -235,7 +224,7 @@ class _HomePageState extends State<HomePage> {
                           ),
                           child: DropdownButton<String>(
                             value: dropdownValue,
-                            icon: const Icon(Icons.keyboard_arrow_down,
+                            icon: const Icon(Icons.arrow_drop_up,
                                 color: Colors.white),
                             dropdownColor: const Color(0xFF609FA1),
                             style: const TextStyle(color: Colors.white),
@@ -266,5 +255,78 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  Widget unlockSuccessfull() => Transform.translate(
+        offset: Offset(translateX, translateY),
+        child: AnimatedContainer(
+          duration: translateX == 0
+              ? Duration(milliseconds: longDuration)
+              : Duration(
+                  milliseconds:
+                      shortDuration), // Different durations for swipe right and back
+          width: 70 + myWidth,
+          height: 64, // Match the height of the container
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(50.0),
+            color: const Color(0xFFC92C6C),
+          ),
+          child: myWidth > 0.0
+              ? const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Icon(
+                      Icons.check,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                    SizedBox(width: 5), // Space between icon and text
+                    Flexible(
+                      child: Text(
+                        "Door Opened",
+                        style: TextStyle(color: Colors.white, fontSize: 19.0),
+                      ),
+                    )
+                  ],
+                )
+              : const Icon(
+                  Icons.navigate_next,
+                  color: Colors.white,
+                  size: 50.0,
+                ),
+        ),
+      );
+
+  _incTransXval() async {
+    int canLoop = -1;
+    for (var i = 0; canLoop == -1; i++) {
+      setState(() {
+        if (translateX + 1 <
+            MediaQuery.of(context).size.width - (209 + myWidth)) {
+          translateX += 1;
+          myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
+        } else {
+          setState(() {
+            canLoop = 1;
+          });
+        }
+      });
+    }
+  }
+
+  _decTransXval() async {
+    int canLoop = -1;
+    for (var i = 0; canLoop == -1; i++) {
+      setState(() {
+        if (translateX - 1 > 0) {
+          translateX -= 1;
+          myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
+        } else {
+          setState(() {
+            canLoop = 1;
+          });
+        }
+      });
+    }
   }
 }
