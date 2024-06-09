@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:evolt/services/mqtt_service.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -15,6 +16,16 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final MQTTService mqttService = MQTTService();
+  int idPintu = 1;
+  int idUser = 1;
+
+  @override
+  void initState() {
+    super.initState();
+    mqttService.connect(idUser);
+  }
+
   String dropdownValue = "PintuKu";
   var items = [
     'PintuKu',
@@ -33,7 +44,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
+    // double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -101,6 +112,11 @@ class _HomePageState extends State<HomePage> {
                         height: 1.0,
                       ),
                     ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () =>
+                        mqttService.publish("lock/control/$idPintu", "UNLOCK"),
+                    child: const Text('Unlock'),
                   ),
                   const Positioned(
                     left: 180,
@@ -175,7 +191,7 @@ class _HomePageState extends State<HomePage> {
                                       }
                                     });
                                     await Future.delayed(const Duration(
-                                        seconds: 1)); // delay for 1 second
+                                        seconds: 4)); // delay for 4 second
                                     setState(() {
                                       translateX = 0.0;
                                       myWidth = 0.0;
@@ -190,7 +206,7 @@ class _HomePageState extends State<HomePage> {
                                           ? const Expanded(
                                               child: Center(
                                                 child: Text(
-                                                  "Swipe to Unlock Door",
+                                                  "",
                                                   style: TextStyle(
                                                     color: Colors.white,
                                                     fontSize: 17.0,
