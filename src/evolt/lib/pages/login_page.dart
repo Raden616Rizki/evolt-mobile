@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MaterialApp(
@@ -14,7 +16,91 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final TextEditingController _usernameController = TextEditingController();
+  final TextEditingController _pinController = TextEditingController();
   static final Color blackWithOpacity = Colors.black.withOpacity(0.4);
+
+  Future<void> login(String username, String pin) async {
+    if (username.isEmpty || pin.isEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Input Error'),
+            content: const Text('Username and pin cannot be empty.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+      return;
+    }
+
+    final response = await http.post(
+      Uri.parse('http://34.101.210.71:8000/api/login/mobile'), 
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'username': username,
+        'pin': pin,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      print('Login successful');
+      final responseData = jsonDecode(response.body);
+      print('Response data: $responseData');
+      Navigator.of(context).pushNamed('/home');
+    } else {
+      print('Login failed with status: ${response.statusCode}.');
+      print('Response body: ${response.body}');
+      final responseData = jsonDecode(response.body);
+      print('Error message: ${responseData['message']}');
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Login Failed'),
+            content: Text(responseData['message'] ?? 'Invalid username or pin.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  Future<void> testConnection() async {
+    try {
+      final response = await http.get(Uri.parse('http://10.0.2.2:8000'));
+      if (response.statusCode == 200) {
+        print('Connection successful');
+      } else {
+        print('Failed to connect with status: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    testConnection();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,6 +173,8 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: TextStyle(color: Color(0xFFEFEEEC)),
                         ),
+                        style: const TextStyle(color: Color(0xFFEFEEEC)),
+                        obscureText: true,
                       ),
                       const SizedBox(height: 20),
                       SizedBox(
