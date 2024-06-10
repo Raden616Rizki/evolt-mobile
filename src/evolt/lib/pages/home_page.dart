@@ -20,6 +20,27 @@ class _HomePageState extends State<HomePage> {
   int idPintu = 1;
   int idUser = 1;
 
+  double dragExtent = 0.0;
+
+  void onDragUpdate(DragUpdateDetails details) {
+    setState(() {
+      dragExtent += details.primaryDelta!;
+      dragExtent =
+          dragExtent.clamp(0.0, MediaQuery.of(context).size.width * 0.6);
+    });
+  }
+
+  void onDragEnd(DragEndDetails details) {
+    if (dragExtent >= MediaQuery.of(context).size.width * 0.6) {
+      // Perform your action here
+      // debugPrint('Door unlocked!');
+      mqttService.publish("lock/control/$idPintu", "UNLOCK");
+    }
+    setState(() {
+      dragExtent = 0.0;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -44,7 +65,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    // double screenHeight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -113,11 +134,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  ElevatedButton(
-                    onPressed: () =>
-                        mqttService.publish("lock/control/$idPintu", "UNLOCK"),
-                    child: const Text('Unlock'),
-                  ),
+                  // ElevatedButton(
+                  //   onPressed: () =>
+                  //       mqttService.publish("lock/control/$idPintu", "UNLOCK"),
+                  //   child: const Text('Unlock'),
+                  // ),
                   const Positioned(
                     left: 180,
                     top: 193,
@@ -132,10 +153,10 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  const Positioned(
-                    left: 145,
-                    top: 535,
-                    child: Text(
+                  Positioned(
+                    left: screenWidth * 0.348,
+                    top: screenHeight * 0.72,
+                    child: const Text(
                       'Swipe to unlock door!',
                       style: TextStyle(
                         color: Color(0xFFEFEEEC),
@@ -147,84 +168,122 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Positioned(
-                    left: 60.0,
-                    top: 565.0,
-                    width: 282.0,
-                    height: 64.0,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50.0),
-                        color: Colors.white,
-                      ),
-                      child: Stack(
-                        children: [
-                          Positioned.fill(
-                            child: Padding(
-                              padding: const EdgeInsets.all(4.0),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(50.0),
-                                  color: const Color(0xFFF070A4),
-                                ),
-                                child: GestureDetector(
-                                  onHorizontalDragUpdate: (event) async {
-                                    if (event.primaryDelta! > 10) {
-                                      _incTransXval();
-                                    } else if (event.primaryDelta! < -10) {
-                                      _decTransXval();
-                                    }
-                                  },
-                                  onHorizontalDragEnd: (event) async {
-                                    setState(() {
-                                      if (translateX >=
-                                          MediaQuery.of(context).size.width /
-                                              2) {
-                                        translateX =
-                                            MediaQuery.of(context).size.width -
-                                                209;
-                                        myWidth =
-                                            MediaQuery.of(context).size.width -
-                                                209;
-                                      } else {
-                                        translateX = 0.0;
-                                        myWidth = 0.0;
-                                      }
-                                    });
-                                    await Future.delayed(const Duration(
-                                        seconds: 4)); // delay for 4 second
-                                    setState(() {
-                                      translateX = 0.0;
-                                      myWidth = 0.0;
-                                    });
-                                  },
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      unlockSuccessfull(),
-                                      myWidth == 0.0
-                                          ? const Expanded(
-                                              child: Center(
-                                                child: Text(
-                                                  "",
-                                                  style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 17.0,
-                                                  ),
-                                                ),
-                                              ),
-                                            )
-                                          : const SizedBox(),
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
+                    left: screenWidth * 0.1,
+                    right: screenWidth * 0.1,
+                    bottom: screenHeight * 0.21,
+                    child: GestureDetector(
+                      onHorizontalDragUpdate: onDragUpdate,
+                      onHorizontalDragEnd: onDragEnd,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: 60,
+                        alignment: Alignment.centerLeft,
+                        padding: EdgeInsets.only(left: dragExtent),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF609FA1), // Background color
+                          border: Border.all(
+                            color: const Color(0xFFEFEEEC), // Border color
+                            width: 2,
                           ),
-                        ],
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                        child: Container(
+                          alignment: Alignment.center,
+                          width: 80,
+                          height: 60,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFC92C6C), // Button color
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: const Icon(
+                            Icons.arrow_forward_ios,
+                            color: Color(0xFFEFEEEC), // Icon color
+                          ),
+                        ),
                       ),
                     ),
                   ),
+                  // Positioned(
+                  //   left: 60.0,
+                  //   top: screenHeight * 0.6,
+                  //   width: 282.0,
+                  //   height: 64.0,
+                  //   child: Container(
+                  //     decoration: BoxDecoration(
+                  //       borderRadius: BorderRadius.circular(50.0),
+                  //       color: Colors.white,
+                  //     ),
+                  //     child: Stack(
+                  //       children: [
+                  //         Positioned.fill(
+                  //           child: Padding(
+                  //             padding: const EdgeInsets.all(4.0),
+                  //             child: Container(
+                  //               decoration: BoxDecoration(
+                  //                 borderRadius: BorderRadius.circular(50.0),
+                  //                 color: const Color(0xFFF070A4),
+                  //               ),
+                  //               child: GestureDetector(
+                  //                 onHorizontalDragUpdate: (event) async {
+                  //                   if (event.primaryDelta! > 10) {
+                  //                     _incTransXval();
+                  //                   } else if (event.primaryDelta! < -10) {
+                  //                     _decTransXval();
+                  //                   }
+                  //                 },
+                  //                 onHorizontalDragEnd: (event) async {
+                  //                   setState(() {
+                  //                     if (translateX >=
+                  //                         MediaQuery.of(context).size.width /
+                  //                             2) {
+                  //                       translateX =
+                  //                           MediaQuery.of(context).size.width -
+                  //                               100;
+                  //                       myWidth =
+                  //                           MediaQuery.of(context).size.width -
+                  //                               100;
+                  //                       mqttService.publish(
+                  //                           "lock/control/$idPintu", "UNLOCK");
+                  //                     } else {
+                  //                       translateX = 0.0;
+                  //                       myWidth = 0.0;
+                  //                     }
+                  //                   });
+                  //                   await Future.delayed(const Duration(
+                  //                       seconds: 1)); // delay for 1 second
+                  //                   setState(() {
+                  //                     translateX = 0.0;
+                  //                     myWidth = 0.0;
+                  //                   });
+                  //                 },
+                  //                 child: Row(
+                  //                   mainAxisAlignment:
+                  //                       MainAxisAlignment.spaceBetween,
+                  //                   children: [
+                  //                     unlockSuccessfull(),
+                  //                     myWidth == 0.0
+                  //                         ? const Expanded(
+                  //                             child: Center(
+                  //                               child: Text(
+                  //                                 "",
+                  //                                 style: TextStyle(
+                  //                                   color: Colors.white,
+                  //                                   fontSize: 17.0,
+                  //                                 ),
+                  //                               ),
+                  //                             ),
+                  //                           )
+                  //                         : const SizedBox(),
+                  //                   ],
+                  //                 ),
+                  //               ),
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   Positioned(
                     // Positioned DropUpButton
                     left: 145,
@@ -235,8 +294,9 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF609FA1),
+                            color: const Color(0xFFC92C6C),
                             border: Border.all(color: Colors.white),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: DropdownButton<String>(
                             value: dropdownValue,

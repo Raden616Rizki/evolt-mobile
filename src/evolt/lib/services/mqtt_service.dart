@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+// import 'package:flutter/material.dart';
 import 'package:mqtt_client/mqtt_client.dart' as mqtt;
 import 'package:mqtt_client/mqtt_server_client.dart' as mqtt;
 
@@ -8,8 +8,8 @@ class MQTTService {
 
   void connect(int idUser) async {
     // Specify a unique client identifier
-    client =
-        mqtt.MqttServerClient.withPort('34.101.210.71', idUser.toString(), 1883);
+    client = mqtt.MqttServerClient.withPort(
+        '34.101.210.71', idUser.toString(), 1883);
 
     client.logging(on: true); // Enable logging for more detailed error messages
 
@@ -27,28 +27,28 @@ class MQTTService {
     try {
       await client.connect();
     } catch (e) {
-      debugPrint('Exception: $e');
+      // debugPrint('Exception: $e');
       client.disconnect();
       return;
     }
 
     // Check connection state
     if (client.connectionStatus!.state == mqtt.MqttConnectionState.connected) {
-      debugPrint('Connected successfully');
+      // debugPrint('Connected successfully');
     } else {
-      debugPrint('Failed to connect, status is ${client.connectionStatus}');
+      // debugPrint('Failed to connect, status is ${client.connectionStatus}');
       client.disconnect();
       return;
     }
 
     client.updates!
         .listen((List<mqtt.MqttReceivedMessage<mqtt.MqttMessage>> c) {
-      final mqtt.MqttPublishMessage message =
-          c[0].payload as mqtt.MqttPublishMessage;
-      final payload = mqtt.MqttPublishPayload.bytesToStringAsString(
-          message.payload.message);
+      // final mqtt.MqttPublishMessage message =
+      //     c[0].payload as mqtt.MqttPublishMessage;
+      // final payload = mqtt.MqttPublishPayload.bytesToStringAsString(
+      //     message.payload.message);
 
-      debugPrint('Received message: $payload from topic: ${c[0].topic}>');
+      // debugPrint('Received message: $payload from topic: ${c[0].topic}>');
     });
   }
 
