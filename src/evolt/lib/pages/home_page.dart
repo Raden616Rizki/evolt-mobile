@@ -19,7 +19,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late final Map user;
-  late int idUser;
+  int idUser = 0;
   String username = 'User';
 
   final MQTTService mqttService = MQTTService();
@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage> {
           'id_pintu': idPintu.toString(),
         }),
       );
-      debugPrint(response.statusCode.toString());
+      debugPrint(response.body);
       // try {
       //   final response = await http.post(
       //     Uri.parse('http://34.101.210.71:8000/api/log/mobile'),
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
         // Now it's safe to use context.
         setState(() {
           user = ModalRoute.of(context)!.settings.arguments as Map;
-          idUser = user["idUser"] ?? 0;
+          idUser = user["id_user"];
           username = user["username"];
           debugPrint(idUser.toString());
           debugPrint(username);
