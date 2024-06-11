@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final response = await http.post(
-      Uri.parse('http://34.101.210.71:8000/api/login/mobile'),
+      Uri.parse('http://34.101.227.125:8000/api/login/mobile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -54,11 +54,13 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
-      debugPrint('Login successful');
+      // debugPrint('Login successful');
       final responseData = jsonDecode(response.body);
       final user = responseData['user'];
-      debugPrint('Response data: $user');
-      Navigator.of(context).pushNamed('/home', arguments: user);
+      final doors = responseData['doors'];
+      // debugPrint('Response data: $user');
+      Navigator.of(context)
+          .pushNamed('/home', arguments: {'users': user, 'doors': doors});
     } else {
       debugPrint('Login failed with status: ${response.statusCode}.');
       debugPrint('Response body: ${response.body}');

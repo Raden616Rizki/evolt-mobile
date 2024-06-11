@@ -18,12 +18,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late final Map user;
+  late final Map data;
   int idUser = 0;
   String username = 'User';
+  List doorsList = [];
 
   final MQTTService mqttService = MQTTService();
   int idPintu = 1;
+  String namaPintu = '';
 
   double dragExtent = 0.0;
 
@@ -42,7 +44,7 @@ class _HomePageState extends State<HomePage> {
       mqttService.publish("lock/control/$idPintu", "UNLOCK");
 
       final response = await http.post(
-        Uri.parse('http://34.101.210.71:8000/api/log/mobile'),
+        Uri.parse('http://34.101.227.125:8000/api/log/mobile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -51,30 +53,9 @@ class _HomePageState extends State<HomePage> {
           'id_pintu': idPintu.toString(),
         }),
       );
-      debugPrint(response.body);
-      // try {
-      //   final response = await http.post(
-      //     Uri.parse('http://34.101.210.71:8000/api/log/mobile'),
-      //     headers: <String, String>{
-      //       'Content-Type': 'application/json; charset=UTF-8',
-      //     },
-      //     body: jsonEncode(<String, String>{
-      //       'id_user': idUser.toString(),
-      //       'id_pintu': idPintu.toString(),
-      //     }),
-      //   );
-      //   debugPrint(response.statusCode.toString());
-
-      //   if (response.statusCode == 200) {
-      //     debugPrint('Berhasil Upload Log data');
-      //   } else {
-      //     debugPrint('Error: ${response.body}');
-      //   }
-      // } catch (e) {
-      //   // Tampilkan pesan error jika terjadi exception
-      //   debugPrint('Exception caught: $e');
-      // }
+      debugPrint(response.statusCode.toString());
     }
+
     setState(() {
       dragExtent = 0.0;
     });
@@ -83,30 +64,24 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    // getListPintu();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         // Now it's safe to use context.
         setState(() {
-          user = ModalRoute.of(context)!.settings.arguments as Map;
-          idUser = user["id_user"];
-          username = user["username"];
-          debugPrint(idUser.toString());
-          debugPrint(username);
+          data = ModalRoute.of(context)!.settings.arguments as Map;
+          // debugPrint(data.toString());
+          idUser = data['users']["id_user"];
+          username = data['users']["username"];
+          doorsList = data['doors'];
+          idPintu = doorsList[0]['id_door'];
+          namaPintu = doorsList[0]['door_name'];
         });
         mqttService.connect(idUser);
       }
     });
   }
 
-  String dropdownValue = "PintuKu";
-  var items = [
-    'PintuKu',
-    'PintuNya',
-    'PintuMu',
-    'PintuPintu',
-    'Pintuuu',
-    'ABC'
-  ];
   double myWidth = 0;
   double translateX = 0.0;
   double translateY = 0.0;
@@ -118,6 +93,8 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+
+    // debugPrint(doorsList.toString());
 
     return Scaffold(
       appBar: AppBar(
@@ -347,29 +324,29 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(
-                            color: const Color(0xFFC92C6C),
+                            color: const Color(0xFF322C39),
                             border: Border.all(color: Colors.white),
                             borderRadius: BorderRadius.circular(8.0),
                           ),
-                          child: DropdownButton<String>(
-                            value: dropdownValue,
+                          child: DropdownButton<int>(
+                            value: idPintu,
                             icon: const Icon(Icons.arrow_drop_up,
                                 color: Colors.white),
-                            dropdownColor: const Color(0xFF609FA1),
+                            dropdownColor: const Color(0xFF322C39),
                             style: const TextStyle(color: Colors.white),
                             underline: Container(),
-                            items: items.map((String item) {
-                              return DropdownMenuItem<String>(
-                                value: item,
+                            items: doorsList.map((doorList) {
+                              return DropdownMenuItem<int>(
+                                value: doorList['id_door'],
                                 child: Text(
-                                  item,
+                                  doorList['door_name'],
                                   style: const TextStyle(color: Colors.white),
                                 ),
                               );
                             }).toList(),
-                            onChanged: (String? newValue) {
+                            onChanged: (int? newValue) {
                               setState(() {
-                                dropdownValue = newValue!;
+                                idPintu = newValue!;
                               });
                             },
                           ),
