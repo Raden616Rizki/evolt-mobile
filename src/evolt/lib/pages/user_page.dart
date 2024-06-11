@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:evolt/pages/login_page.dart';
 
 void main() {
   runApp(const UserPage());
@@ -6,7 +7,6 @@ void main() {
 
 class UserPage extends StatelessWidget {
   const UserPage({Key? key}) : super(key: key);
-  
 
   @override
   Widget build(BuildContext context) {
@@ -14,10 +14,15 @@ class UserPage extends StatelessWidget {
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
       ),
+      routes: {
+        '/login': (context) => const LoginPage(),
+      },
       home: Scaffold(
-        body: ListView(children: [
-          UserPageContent(),
-        ]),
+        body: ListView(
+          children: [
+            UserPageContent(),
+          ],
+        ),
       ),
     );
   }
@@ -26,29 +31,32 @@ class UserPage extends StatelessWidget {
 class UserPageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Column(
       children: [
         Container(
-          width: 360,
-          height: 800,
+          width: screenWidth,
+          height: screenHeight * 1.5,
           clipBehavior: Clip.antiAlias,
           decoration: const BoxDecoration(color: Color(0xFF322C39)),
           child: Stack(
             children: [
               Positioned(
-                left: 27,
-                top: 155,
-                child: Container(
-                  width: 305,
-                  height: 276,
+                left: screenWidth * 0.075,
+                top: screenHeight * 0.22,
+                child: SizedBox(
+                  width: screenWidth * 0.85,
+                  height: screenHeight,
                   child: Stack(
                     children: [
                       Positioned(
                         left: 0,
                         top: 0,
                         child: Container(
-                          width: 305,
-                          height: 81,
+                          width: screenWidth * 0.85,
+                          height: screenHeight * 0.12,
                           decoration: const ShapeDecoration(
                             color: Color(0xFF609FA1),
                             shape: RoundedRectangleBorder(
@@ -63,10 +71,10 @@ class UserPageContent extends StatelessWidget {
                               'USER INFORMATION',
                               style: TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 20,
                                 fontFamily: 'Leelawadee UI',
-                                fontWeight: FontWeight.w700,
-                                height: 0,
+                                fontWeight: FontWeight.w500,
+                                height: 1.2,
                               ),
                             ),
                           ),
@@ -74,10 +82,10 @@ class UserPageContent extends StatelessWidget {
                       ),
                       Positioned(
                         left: 0,
-                        top: 48,
+                        top: screenHeight * 0.1,
                         child: Container(
-                          width: 305,
-                          height: 228,
+                          width: screenWidth * 0.85,
+                          height: screenHeight * 0.35,
                           decoration: const ShapeDecoration(
                             color: Color(0xFFEFEEEC),
                             shape: RoundedRectangleBorder(
@@ -92,19 +100,19 @@ class UserPageContent extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        left: 15,
-                        top: 62,
+                        left: screenWidth * 0.04,
+                        top: screenHeight * 0.14,
                         child: Container(
-                          width: 275,
-                          height: 24,
+                          width: screenWidth * 0.75,
+                          height: screenHeight * 0.04,
                           child: Stack(
                             children: [
                               Positioned(
-                                left: 78,
+                                left: screenWidth * 0.21,
                                 top: 0,
                                 child: Container(
-                                  width: 197,
-                                  height: 24,
+                                  width: screenWidth * 0.53,
+                                  height: screenHeight * 0.04,
                                   decoration: const ShapeDecoration(
                                     color: Color(0xFF609FA1),
                                     shape: RoundedRectangleBorder(
@@ -130,8 +138,8 @@ class UserPageContent extends StatelessWidget {
                                 left: 0,
                                 top: 0,
                                 child: Container(
-                                  width: 73,
-                                  height: 24,
+                                  width: screenWidth * 0.2,
+                                  height: screenHeight * 0.04,
                                   decoration: const ShapeDecoration(
                                     color: Color(0xFF609FA1),
                                     shape: RoundedRectangleBorder(
@@ -156,10 +164,10 @@ class UserPageContent extends StatelessWidget {
                                       'EMAIL',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 10,
+                                        fontSize: 11,
                                         fontFamily: 'Microsoft YaHei UI',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ),
@@ -170,19 +178,19 @@ class UserPageContent extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        left: 15,
-                        top: 100,
+                        left: screenWidth * 0.04,
+                        top: screenHeight * 0.21,
                         child: Container(
-                          width: 275,
-                          height: 24,
+                          width: screenWidth * 0.75,
+                          height: screenHeight * 0.04,
                           child: Stack(
                             children: [
                               Positioned(
-                                left: 78,
+                                left: screenWidth * 0.21,
                                 top: 0,
                                 child: Container(
-                                  width: 197,
-                                  height: 24,
+                                  width: screenWidth * 0.53,
+                                  height: screenHeight * 0.04,
                                   decoration: const ShapeDecoration(
                                     color: Color(0xFF609FA1),
                                     shape: RoundedRectangleBorder(
@@ -208,8 +216,8 @@ class UserPageContent extends StatelessWidget {
                                 left: 0,
                                 top: 0,
                                 child: Container(
-                                  width: 73,
-                                  height: 24,
+                                  width: screenWidth * 0.2,
+                                  height: screenHeight * 0.04,
                                   decoration: const ShapeDecoration(
                                     color: Color(0xFF609FA1),
                                     shape: RoundedRectangleBorder(
@@ -234,10 +242,10 @@ class UserPageContent extends StatelessWidget {
                                       'USERNAME',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 10,
+                                        fontSize: 11,
                                         fontFamily: 'Microsoft YaHei UI',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ),
@@ -248,19 +256,19 @@ class UserPageContent extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        left: 15,
-                        top: 138,
+                        left: screenWidth * 0.04,
+                        top: screenHeight * 0.28,
                         child: Container(
-                          width: 275,
-                          height: 24,
+                          width: screenWidth * 0.75,
+                          height: screenHeight * 0.04,
                           child: Stack(
                             children: [
                               Positioned(
-                                left: 78,
+                                left: screenWidth * 0.21,
                                 top: 0,
                                 child: Container(
-                                  width: 197,
-                                  height: 24,
+                                  width: screenWidth * 0.53,
+                                  height: screenHeight * 0.04,
                                   decoration: const ShapeDecoration(
                                     color: Color(0xFF609FA1),
                                     shape: RoundedRectangleBorder(
@@ -286,8 +294,8 @@ class UserPageContent extends StatelessWidget {
                                 left: 0,
                                 top: 0,
                                 child: Container(
-                                  width: 73,
-                                  height: 24,
+                                  width: screenWidth * 0.2,
+                                  height: screenHeight * 0.04,
                                   decoration: const ShapeDecoration(
                                     color: Color(0xFF609FA1),
                                     shape: RoundedRectangleBorder(
@@ -312,10 +320,10 @@ class UserPageContent extends StatelessWidget {
                                       'STATUS',
                                       style: TextStyle(
                                         color: Colors.white,
-                                        fontSize: 10,
+                                        fontSize: 11,
                                         fontFamily: 'Microsoft YaHei UI',
-                                        fontWeight: FontWeight.w400,
-                                        height: 0,
+                                        fontWeight: FontWeight.w600,
+                                        height: 1.2,
                                       ),
                                     ),
                                   ),
@@ -330,77 +338,61 @@ class UserPageContent extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: 105,
-                top: 452,
-                child: Container(
-                  width: 149,
-                  height: 42,
-                  decoration: ShapeDecoration(
-                    color: const Color(0xFFC92C6C),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'LOGOUT',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontFamily: 'Microsoft YaHei UI',
-                        fontWeight: FontWeight.w400,
+                left: screenWidth * 0.3,
+                top: screenHeight * 0.60,
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pushNamed(context, '/login');
+                  },
+                  child: Container(
+                    width: screenWidth * 0.4,
+                    height: screenHeight * 0.05,
+                    decoration: ShapeDecoration(
+                      color: const Color(0xFFC92C6C),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              const Positioned(
-                left: 134,
-                top: 397,
-                child: Text(
-                  'Change information?',
-                  style: TextStyle(
-                    color: Color(0xFF648FFF),
-                    fontSize: 9,
-                    fontFamily: 'Microsoft YaHei UI',
-                    fontWeight: FontWeight.w400,
+                    child: const Center(
+                      child: Text(
+                        'LOGOUT',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Microsoft YaHei UI',
+                          fontWeight: FontWeight.w400,
+                          height: 1.2,
+                        ),
+                      ),
+                    ),
                   ),
                 ),
               ),
               Positioned(
-                left: 120,
-                top: 76,
+                left: screenWidth * 0.380,
+                top: screenHeight * 0.58,
+                child: const Text(
+                  'Change information?',
+                  style: TextStyle(
+                    color: Color(0xFF648FFF),
+                    fontSize: 10,
+                    fontFamily: 'Microsoft YaHei UI',
+                    fontWeight: FontWeight.w600,
+                    height: 1.2,
+                  ),
+                ),
+              ),
+              Positioned(
+                left: screenWidth * 0.365,
+                top: screenHeight * 0.12,
                 child: Container(
-                  width: 110,
-                  height: 110,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        left: 14,
-                        top: 0,
-                        child: Container(
-                          width: 96,
-                          height: 96,
-                          decoration: const ShapeDecoration(
-                            color: Color(0xFF322C39),
-                            shape: CircleBorder(),
-                          ),
-                          child: Center(
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                image: AssetImage('assets/Icon Profile.png'),
-                                fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  width: screenWidth * 0.28,
+                  height: screenHeight * 0.14,
+                  decoration: const BoxDecoration(
+                    image: DecorationImage(
+                      image: AssetImage('assets/Icon-Profile.png'),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -411,4 +403,3 @@ class UserPageContent extends StatelessWidget {
     );
   }
 }
-

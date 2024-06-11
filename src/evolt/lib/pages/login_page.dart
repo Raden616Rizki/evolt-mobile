@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final response = await http.post(
-      Uri.parse('http://34.101.210.71:8000/api/login/mobile'), 
+      Uri.parse('http://34.101.210.71:8000/api/login/mobile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -68,7 +68,8 @@ class _LoginPageState extends State<LoginPage> {
         builder: (context) {
           return AlertDialog(
             title: const Text('Login Failed'),
-            content: Text(responseData['message'] ?? 'Invalid username or pin.'),
+            content:
+                Text(responseData['message'] ?? 'Invalid username or pin.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -205,9 +206,12 @@ class _LoginPageState extends State<LoginPage> {
                       width: screenWidth * 0.37,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(16)),
-                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF609FA1)),
-                          shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.8)),
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.all(16)),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF609FA1)),
+                          shadowColor: MaterialStateProperty.all<Color>(
+                              Colors.black.withOpacity(0.8)),
                           elevation: MaterialStateProperty.all(5),
                         ),
                         onPressed: () {
