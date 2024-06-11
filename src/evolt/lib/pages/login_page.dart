@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final response = await http.post(
-      Uri.parse('http://34.101.210.71:8000/api/login/mobile'), 
+      Uri.parse('http://34.101.210.71:8000/api/login/mobile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -54,21 +54,23 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
-      print('Login successful');
+      debugPrint('Login successful');
       final responseData = jsonDecode(response.body);
-      print('Response data: $responseData');
-      Navigator.of(context).pushNamed('/home');
+      final user = responseData['user'];
+      debugPrint('Response data: $user');
+      Navigator.of(context).pushNamed('/home', arguments: user);
     } else {
-      print('Login failed with status: ${response.statusCode}.');
-      print('Response body: ${response.body}');
+      debugPrint('Login failed with status: ${response.statusCode}.');
+      debugPrint('Response body: ${response.body}');
       final responseData = jsonDecode(response.body);
-      print('Error message: ${responseData['message']}');
+      debugPrint('Error message: ${responseData['message']}');
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
             title: const Text('Login Failed'),
-            content: Text(responseData['message'] ?? 'Invalid username or pin.'),
+            content:
+                Text(responseData['message'] ?? 'Invalid username or pin.'),
             actions: [
               TextButton(
                 onPressed: () {
@@ -87,12 +89,12 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final response = await http.get(Uri.parse('http://10.0.2.2:8000'));
       if (response.statusCode == 200) {
-        print('Connection successful');
+        debugPrint('Connection successful');
       } else {
-        print('Failed to connect with status: ${response.statusCode}');
+        debugPrint('Failed to connect with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
     }
   }
 
@@ -205,9 +207,12 @@ class _LoginPageState extends State<LoginPage> {
                       width: screenWidth * 0.37,
                       child: ElevatedButton(
                         style: ButtonStyle(
-                          padding: MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(16)),
-                          backgroundColor: MaterialStateProperty.all<Color>(const Color(0xFF609FA1)),
-                          shadowColor: MaterialStateProperty.all<Color>(Colors.black.withOpacity(0.8)),
+                          padding: MaterialStateProperty.all<EdgeInsets>(
+                              const EdgeInsets.all(16)),
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              const Color(0xFF609FA1)),
+                          shadowColor: MaterialStateProperty.all<Color>(
+                              Colors.black.withOpacity(0.8)),
                           elevation: MaterialStateProperty.all(5),
                         ),
                         onPressed: () {

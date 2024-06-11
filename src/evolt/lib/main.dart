@@ -11,7 +11,7 @@ void main() {
       '/': (context) => const SplashScreen(),
       '/login': (context) => const LoginPage(),
       '/home': (context) => const HomePage(),
-      '/user': (context) => const UserPage()
+      '/user': (context) => const UserPage() 
     },
   ));
 }
