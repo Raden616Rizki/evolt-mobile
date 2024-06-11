@@ -29,6 +29,10 @@ class UserPageContent extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
+    final Map data = ModalRoute.of(context)!.settings.arguments as Map;
+    final username = data['username'];
+    final email = data['email'];
+
     return Column(
       children: [
         Container(
@@ -97,7 +101,7 @@ class UserPageContent extends StatelessWidget {
                       Positioned(
                         left: screenWidth * 0.04,
                         top: screenHeight * 0.14,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.75,
                           height: screenHeight * 0.04,
                           child: Stack(
@@ -126,6 +130,23 @@ class UserPageContent extends StatelessWidget {
                                         spreadRadius: 0,
                                       )
                                     ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: screenWidth * 0.25),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    email,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontFamily: 'Microsoft YaHei UI',
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -175,7 +196,7 @@ class UserPageContent extends StatelessWidget {
                       Positioned(
                         left: screenWidth * 0.04,
                         top: screenHeight * 0.21,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.75,
                           height: screenHeight * 0.04,
                           child: Stack(
@@ -204,6 +225,23 @@ class UserPageContent extends StatelessWidget {
                                         spreadRadius: 0,
                                       )
                                     ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding:
+                                    EdgeInsets.only(left: screenWidth * 0.25),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    username,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontFamily: 'Microsoft YaHei UI',
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -253,7 +291,7 @@ class UserPageContent extends StatelessWidget {
                       Positioned(
                         left: screenWidth * 0.04,
                         top: screenHeight * 0.28,
-                        child: Container(
+                        child: SizedBox(
                           width: screenWidth * 0.75,
                           height: screenHeight * 0.04,
                           child: Stack(
@@ -282,6 +320,25 @@ class UserPageContent extends StatelessWidget {
                                         spreadRadius: 0,
                                       )
                                     ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: screenWidth *
+                                        0.25), // Menambahkan padding di sisi kiri
+                                child: const Align(
+                                  alignment: Alignment
+                                      .centerLeft, // Ini akan meratakan teks ke kiri
+                                  child: Text(
+                                    'Aktif',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 11,
+                                      fontFamily: 'Microsoft YaHei UI',
+                                      fontWeight: FontWeight.w600,
+                                      height: 1.2,
+                                    ),
                                   ),
                                 ),
                               ),

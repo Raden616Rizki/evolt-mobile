@@ -21,6 +21,7 @@ class _HomePageState extends State<HomePage> {
   late final Map data;
   int idUser = 0;
   String username = 'User';
+  String email = 'email@gmail.com';
   List doorsList = [];
 
   final MQTTService mqttService = MQTTService();
@@ -73,6 +74,7 @@ class _HomePageState extends State<HomePage> {
           // debugPrint(data.toString());
           idUser = data['users']["id_user"];
           username = data['users']["username"];
+          email = data['users']["email"];
           doorsList = data['doors'];
           idPintu = doorsList[0]['id_door'];
           namaPintu = doorsList[0]['door_name'];
@@ -106,7 +108,8 @@ class _HomePageState extends State<HomePage> {
             icon: Image.asset('assets/Icon User.png'),
             iconSize: 40.0,
             onPressed: () {
-              Navigator.of(context).pushNamed('/user');
+              Navigator.of(context).pushNamed('/user',
+                  arguments: {'email': email, 'username': username});
             },
           ),
         ],

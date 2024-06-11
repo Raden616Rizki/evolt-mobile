@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    initialRoute: '/', 
+    initialRoute: '/',
     routes: {
       '/': (context) => const SplashScreen(),
       '/login': (context) => const LoginPage(),
