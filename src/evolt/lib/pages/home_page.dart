@@ -184,7 +184,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                   ),
                   Positioned(
-                    left: screenWidth * 0.348,
+                    left: screenWidth * 0.33,
                     top: screenHeight * 0.72,
                     child: const Text(
                       'Swipe to unlock door!',
@@ -316,8 +316,8 @@ class _HomePageState extends State<HomePage> {
                   // ),
                   Positioned(
                     // Positioned DropUpButton
-                    left: 145,
-                    bottom: 50,
+                    left: screenWidth * 0.38,
+                    bottom: screenHeight * 0.05,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

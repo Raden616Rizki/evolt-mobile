@@ -1,28 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:evolt/pages/login_page.dart';
-
-void main() {
-  runApp(const UserPage());
-}
 
 class UserPage extends StatelessWidget {
   const UserPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: const Color.fromARGB(255, 18, 32, 47),
-      ),
-      routes: {
-        '/login': (context) => const LoginPage(),
-      },
-      home: Scaffold(
-        body: ListView(
-          children: [
-            UserPageContent(),
-          ],
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF322C39),
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.white),
+          onPressed: () => Navigator.of(context).pop(),
         ),
+      ),
+      body: ListView(
+        children: [
+          UserPageContent(),
+        ],
       ),
     );
   }
@@ -342,7 +337,7 @@ class UserPageContent extends StatelessWidget {
                 top: screenHeight * 0.60,
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.pushNamed(context, '/');
                   },
                   child: Container(
                     width: screenWidth * 0.4,
@@ -370,7 +365,7 @@ class UserPageContent extends StatelessWidget {
               ),
               Positioned(
                 left: screenWidth * 0.380,
-                top: screenHeight * 0.58,
+                top: screenHeight * 0.565,
                 child: const Text(
                   'Change information?',
                   style: TextStyle(
