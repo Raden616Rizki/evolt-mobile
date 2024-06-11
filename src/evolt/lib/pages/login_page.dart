@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> testConnection() async {
     try {
-      final response = await http.get(Uri.parse('http://10.0.2.2:8000'));
+      final response = await http.get(Uri.parse('http://34.101.227.125:8000'));
       if (response.statusCode == 200) {
         debugPrint('Connection successful');
       } else {
