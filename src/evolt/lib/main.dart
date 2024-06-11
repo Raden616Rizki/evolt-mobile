@@ -1,11 +1,12 @@
 import 'package:evolt/pages/home_page.dart';
-import 'package:evolt/pages/login_page.dart';        
+import 'package:evolt/pages/login_page.dart';
 import 'package:evolt/pages/splash_screen.dart';
 import 'package:evolt/pages/user_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     initialRoute: '/',
     routes: {
       '/': (context) => const SplashScreen(),

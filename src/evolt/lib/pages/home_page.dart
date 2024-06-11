@@ -1,6 +1,8 @@
 // import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:evolt/services/mqtt_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(const MaterialApp(
@@ -16,9 +18,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late final Map user;
+  int idUser = 0;
+  String username = 'User';
+
   final MQTTService mqttService = MQTTService();
   int idPintu = 1;
-  int idUser = 1;
 
   double dragExtent = 0.0;
 
@@ -30,11 +35,45 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  void onDragEnd(DragEndDetails details) {
+  void onDragEnd(DragEndDetails details) async {
     if (dragExtent >= MediaQuery.of(context).size.width * 0.6) {
       // Perform your action here
       // debugPrint('Door unlocked!');
       mqttService.publish("lock/control/$idPintu", "UNLOCK");
+
+      final response = await http.post(
+        Uri.parse('http://34.101.210.71:8000/api/log/mobile'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'id_user': idUser.toString(),
+          'id_pintu': idPintu.toString(),
+        }),
+      );
+      debugPrint(response.body);
+      // try {
+      //   final response = await http.post(
+      //     Uri.parse('http://34.101.210.71:8000/api/log/mobile'),
+      //     headers: <String, String>{
+      //       'Content-Type': 'application/json; charset=UTF-8',
+      //     },
+      //     body: jsonEncode(<String, String>{
+      //       'id_user': idUser.toString(),
+      //       'id_pintu': idPintu.toString(),
+      //     }),
+      //   );
+      //   debugPrint(response.statusCode.toString());
+
+      //   if (response.statusCode == 200) {
+      //     debugPrint('Berhasil Upload Log data');
+      //   } else {
+      //     debugPrint('Error: ${response.body}');
+      //   }
+      // } catch (e) {
+      //   // Tampilkan pesan error jika terjadi exception
+      //   debugPrint('Exception caught: $e');
+      // }
     }
     setState(() {
       dragExtent = 0.0;
@@ -44,7 +83,19 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    mqttService.connect(idUser);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        // Now it's safe to use context.
+        setState(() {
+          user = ModalRoute.of(context)!.settings.arguments as Map;
+          idUser = user["id_user"];
+          username = user["username"];
+          debugPrint(idUser.toString());
+          debugPrint(username);
+        });
+        mqttService.connect(idUser);
+      }
+    });
   }
 
   String dropdownValue = "PintuKu";
@@ -67,10 +118,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color(0xFFEFEEEC),
         elevation: 0,
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             icon: Image.asset('assets/Icon User.png'),
@@ -120,16 +173,16 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  const Positioned(
+                  Positioned(
                     left: 60,
-                    top: 130,
-                    child: Text(
-                      'HELLO, ',
+                    top: screenHeight * 0.1,
+                    child: const Text(
+                      'Selamat \n Datang,  ',
                       style: TextStyle(
                         color: Color(0xFF322C39),
                         fontSize: 48,
                         fontFamily: 'Microsoft Yi Baiti',
-                        fontWeight: FontWeight.normal,
+                        fontWeight: FontWeight.bold,
                         height: 1.0,
                       ),
                     ),
@@ -139,12 +192,12 @@ class _HomePageState extends State<HomePage> {
                   //       mqttService.publish("lock/control/$idPintu", "UNLOCK"),
                   //   child: const Text('Unlock'),
                   // ),
-                  const Positioned(
+                  Positioned(
                     left: 180,
-                    top: 193,
+                    top: screenHeight * 0.23,
                     child: Text(
-                      '{Name}',
-                      style: TextStyle(
+                      username,
+                      style: const TextStyle(
                         color: Color(0xFF322C39),
                         fontSize: 48,
                         fontFamily: 'Microsoft Yi Baiti',
@@ -333,76 +386,76 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget unlockSuccessfull() => Transform.translate(
-        offset: Offset(translateX, translateY),
-        child: AnimatedContainer(
-          duration: translateX == 0
-              ? Duration(milliseconds: longDuration)
-              : Duration(
-                  milliseconds:
-                      shortDuration), // Different durations for swipe right and back
-          width: 70 + myWidth,
-          height: 64, // Match the height of the container
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(50.0),
-            color: const Color(0xFFC92C6C),
-          ),
-          child: myWidth > 0.0
-              ? const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(
-                      Icons.check,
-                      color: Colors.white,
-                      size: 30,
-                    ),
-                    SizedBox(width: 5), // Space between icon and text
-                    Flexible(
-                      child: Text(
-                        "Door Opened",
-                        style: TextStyle(color: Colors.white, fontSize: 19.0),
-                      ),
-                    )
-                  ],
-                )
-              : const Icon(
-                  Icons.navigate_next,
-                  color: Colors.white,
-                  size: 50.0,
-                ),
-        ),
-      );
+  // Widget unlockSuccessfull() => Transform.translate(
+  //       offset: Offset(translateX, translateY),
+  //       child: AnimatedContainer(
+  //         duration: translateX == 0
+  //             ? Duration(milliseconds: longDuration)
+  //             : Duration(
+  //                 milliseconds:
+  //                     shortDuration), // Different durations for swipe right and back
+  //         width: 70 + myWidth,
+  //         height: 64, // Match the height of the container
+  //         decoration: BoxDecoration(
+  //           borderRadius: BorderRadius.circular(50.0),
+  //           color: const Color(0xFFC92C6C),
+  //         ),
+  //         child: myWidth > 0.0
+  //             ? const Row(
+  //                 mainAxisAlignment: MainAxisAlignment.center,
+  //                 children: [
+  //                   Icon(
+  //                     Icons.check,
+  //                     color: Colors.white,
+  //                     size: 30,
+  //                   ),
+  //                   SizedBox(width: 5), // Space between icon and text
+  //                   Flexible(
+  //                     child: Text(
+  //                       "Door Opened",
+  //                       style: TextStyle(color: Colors.white, fontSize: 19.0),
+  //                     ),
+  //                   )
+  //                 ],
+  //               )
+  //             : const Icon(
+  //                 Icons.navigate_next,
+  //                 color: Colors.white,
+  //                 size: 50.0,
+  //               ),
+  //       ),
+  //     );
 
-  _incTransXval() async {
-    int canLoop = -1;
-    for (var i = 0; canLoop == -1; i++) {
-      setState(() {
-        if (translateX + 1 <
-            MediaQuery.of(context).size.width - (209 + myWidth)) {
-          translateX += 1;
-          myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
-        } else {
-          setState(() {
-            canLoop = 1;
-          });
-        }
-      });
-    }
-  }
+  // _incTransXval() async {
+  //   int canLoop = -1;
+  //   for (var i = 0; canLoop == -1; i++) {
+  //     setState(() {
+  //       if (translateX + 1 <
+  //           MediaQuery.of(context).size.width - (209 + myWidth)) {
+  //         translateX += 1;
+  //         myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
+  //       } else {
+  //         setState(() {
+  //           canLoop = 1;
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
 
-  _decTransXval() async {
-    int canLoop = -1;
-    for (var i = 0; canLoop == -1; i++) {
-      setState(() {
-        if (translateX - 1 > 0) {
-          translateX -= 1;
-          myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
-        } else {
-          setState(() {
-            canLoop = 1;
-          });
-        }
-      });
-    }
-  }
+  // _decTransXval() async {
+  //   int canLoop = -1;
+  //   for (var i = 0; canLoop == -1; i++) {
+  //     setState(() {
+  //       if (translateX - 1 > 0) {
+  //         translateX -= 1;
+  //         myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
+  //       } else {
+  //         setState(() {
+  //           canLoop = 1;
+  //         });
+  //       }
+  //     });
+  //   }
+  // }
 }

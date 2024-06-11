@@ -54,15 +54,16 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     if (response.statusCode == 200) {
-      print('Login successful');
+      debugPrint('Login successful');
       final responseData = jsonDecode(response.body);
-      print('Response data: $responseData');
-      Navigator.of(context).pushNamed('/home');
+      final user = responseData['user'];
+      debugPrint('Response data: $user');
+      Navigator.of(context).pushNamed('/home', arguments: user);
     } else {
-      print('Login failed with status: ${response.statusCode}.');
-      print('Response body: ${response.body}');
+      debugPrint('Login failed with status: ${response.statusCode}.');
+      debugPrint('Response body: ${response.body}');
       final responseData = jsonDecode(response.body);
-      print('Error message: ${responseData['message']}');
+      debugPrint('Error message: ${responseData['message']}');
       showDialog(
         context: context,
         builder: (context) {
@@ -88,12 +89,12 @@ class _LoginPageState extends State<LoginPage> {
     try {
       final response = await http.get(Uri.parse('http://10.0.2.2:8000'));
       if (response.statusCode == 200) {
-        print('Connection successful');
+        debugPrint('Connection successful');
       } else {
-        print('Failed to connect with status: ${response.statusCode}');
+        debugPrint('Failed to connect with status: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error: $e');
+      debugPrint('Error: $e');
     }
   }
 
