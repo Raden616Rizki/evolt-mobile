@@ -1,4 +1,4 @@
-// import 'package:flutter/cupertino.dart';
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:evolt/services/mqtt_service.dart';
 import 'package:http/http.dart' as http;
@@ -17,17 +17,20 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   late final Map data;
   int idUser = 0;
   String username = 'User';
   String email = 'email@gmail.com';
+  String role = 'Reguler User';
   List doorsList = [];
 
   final MQTTService mqttService = MQTTService();
   int idPintu = 1;
   String namaPintu = '';
 
+  late AnimationController controller;
   double dragExtent = 0.0;
 
   void onDragUpdate(DragUpdateDetails details) {
@@ -45,7 +48,7 @@ class _HomePageState extends State<HomePage> {
       mqttService.publish("lock/control/$idPintu", "UNLOCK");
 
       final response = await http.post(
-        Uri.parse('http://34.101.227.125:8000/api/log/mobile'),
+        Uri.parse('http://34.101.39.34:8000/api/log/mobile'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -55,17 +58,27 @@ class _HomePageState extends State<HomePage> {
         }),
       );
       debugPrint(response.statusCode.toString());
-    }
 
-    setState(() {
-      dragExtent = 0.0;
-    });
+      await Future.delayed(const Duration(seconds: 1));
+      controller.forward(from: 0.0);
+      controller.addListener(() {
+        setState(() {
+          dragExtent = lerpDouble(dragExtent, 0.0, controller.value)!;
+        });
+      });
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    // getListPintu();
+
+    controller = AnimationController(
+      vsync: this,
+      duration:
+          Duration(seconds: 2), // This is the total duration for the animation
+    );
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         // Now it's safe to use context.
@@ -75,6 +88,8 @@ class _HomePageState extends State<HomePage> {
           idUser = data['users']["id_user"];
           username = data['users']["username"];
           email = data['users']["email"];
+          role = data['users']["role"]["role_name"];
+          debugPrint(role);
           doorsList = data['doors'];
           idPintu = doorsList[0]['id_door'];
           namaPintu = doorsList[0]['door_name'];
@@ -84,12 +99,12 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
-  double myWidth = 0;
-  double translateX = 0.0;
-  double translateY = 0.0;
-
-  final int shortDuration = 200; // Duration for quick swipe right
-  final int longDuration = 500; // Duration for slow swipe back
+  @override
+  void dispose() {
+    // Don't forget to dispose of the controller when the widget is removed
+    controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -108,8 +123,11 @@ class _HomePageState extends State<HomePage> {
             icon: Image.asset('assets/Icon User.png'),
             iconSize: 40.0,
             onPressed: () {
-              Navigator.of(context).pushNamed('/user',
-                  arguments: {'email': email, 'username': username});
+              Navigator.of(context).pushNamed('/user', arguments: {
+                'email': email,
+                'username': username,
+                'role': role
+              });
             },
           ),
         ],
@@ -208,7 +226,7 @@ class _HomePageState extends State<HomePage> {
                       onHorizontalDragUpdate: onDragUpdate,
                       onHorizontalDragEnd: onDragEnd,
                       child: Container(
-                        width: MediaQuery.of(context).size.width,
+                        width: screenWidth,
                         height: 60,
                         alignment: Alignment.centerLeft,
                         padding: EdgeInsets.only(left: dragExtent),
@@ -236,90 +254,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
-                  // Positioned(
-                  //   left: 60.0,
-                  //   top: screenHeight * 0.6,
-                  //   width: 282.0,
-                  //   height: 64.0,
-                  //   child: Container(
-                  //     decoration: BoxDecoration(
-                  //       borderRadius: BorderRadius.circular(50.0),
-                  //       color: Colors.white,
-                  //     ),
-                  //     child: Stack(
-                  //       children: [
-                  //         Positioned.fill(
-                  //           child: Padding(
-                  //             padding: const EdgeInsets.all(4.0),
-                  //             child: Container(
-                  //               decoration: BoxDecoration(
-                  //                 borderRadius: BorderRadius.circular(50.0),
-                  //                 color: const Color(0xFFF070A4),
-                  //               ),
-                  //               child: GestureDetector(
-                  //                 onHorizontalDragUpdate: (event) async {
-                  //                   if (event.primaryDelta! > 10) {
-                  //                     _incTransXval();
-                  //                   } else if (event.primaryDelta! < -10) {
-                  //                     _decTransXval();
-                  //                   }
-                  //                 },
-                  //                 onHorizontalDragEnd: (event) async {
-                  //                   setState(() {
-                  //                     if (translateX >=
-                  //                         MediaQuery.of(context).size.width /
-                  //                             2) {
-                  //                       translateX =
-                  //                           MediaQuery.of(context).size.width -
-                  //                               100;
-                  //                       myWidth =
-                  //                           MediaQuery.of(context).size.width -
-                  //                               100;
-                  //                       mqttService.publish(
-                  //                           "lock/control/$idPintu", "UNLOCK");
-                  //                     } else {
-                  //                       translateX = 0.0;
-                  //                       myWidth = 0.0;
-                  //                     }
-                  //                   });
-                  //                   await Future.delayed(const Duration(
-                  //                       seconds: 1)); // delay for 1 second
-                  //                   setState(() {
-                  //                     translateX = 0.0;
-                  //                     myWidth = 0.0;
-                  //                   });
-                  //                 },
-                  //                 child: Row(
-                  //                   mainAxisAlignment:
-                  //                       MainAxisAlignment.spaceBetween,
-                  //                   children: [
-                  //                     unlockSuccessfull(),
-                  //                     myWidth == 0.0
-                  //                         ? const Expanded(
-                  //                             child: Center(
-                  //                               child: Text(
-                  //                                 "",
-                  //                                 style: TextStyle(
-                  //                                   color: Colors.white,
-                  //                                   fontSize: 17.0,
-                  //                                 ),
-                  //                               ),
-                  //                             ),
-                  //                           )
-                  //                         : const SizedBox(),
-                  //                   ],
-                  //                 ),
-                  //               ),
-                  //             ),
-                  //           ),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
                   Positioned(
                     // Positioned DropUpButton
-                    left: screenWidth * 0.38,
+                    left: screenWidth * 0.32,
                     bottom: screenHeight * 0.05,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -365,77 +302,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-
-  // Widget unlockSuccessfull() => Transform.translate(
-  //       offset: Offset(translateX, translateY),
-  //       child: AnimatedContainer(
-  //         duration: translateX == 0
-  //             ? Duration(milliseconds: longDuration)
-  //             : Duration(
-  //                 milliseconds:
-  //                     shortDuration), // Different durations for swipe right and back
-  //         width: 70 + myWidth,
-  //         height: 64, // Match the height of the container
-  //         decoration: BoxDecoration(
-  //           borderRadius: BorderRadius.circular(50.0),
-  //           color: const Color(0xFFC92C6C),
-  //         ),
-  //         child: myWidth > 0.0
-  //             ? const Row(
-  //                 mainAxisAlignment: MainAxisAlignment.center,
-  //                 children: [
-  //                   Icon(
-  //                     Icons.check,
-  //                     color: Colors.white,
-  //                     size: 30,
-  //                   ),
-  //                   SizedBox(width: 5), // Space between icon and text
-  //                   Flexible(
-  //                     child: Text(
-  //                       "Door Opened",
-  //                       style: TextStyle(color: Colors.white, fontSize: 19.0),
-  //                     ),
-  //                   )
-  //                 ],
-  //               )
-  //             : const Icon(
-  //                 Icons.navigate_next,
-  //                 color: Colors.white,
-  //                 size: 50.0,
-  //               ),
-  //       ),
-  //     );
-
-  // _incTransXval() async {
-  //   int canLoop = -1;
-  //   for (var i = 0; canLoop == -1; i++) {
-  //     setState(() {
-  //       if (translateX + 1 <
-  //           MediaQuery.of(context).size.width - (209 + myWidth)) {
-  //         translateX += 1;
-  //         myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
-  //       } else {
-  //         setState(() {
-  //           canLoop = 1;
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
-
-  // _decTransXval() async {
-  //   int canLoop = -1;
-  //   for (var i = 0; canLoop == -1; i++) {
-  //     setState(() {
-  //       if (translateX - 1 > 0) {
-  //         translateX -= 1;
-  //         myWidth = MediaQuery.of(context).size.width - (209 + myWidth);
-  //       } else {
-  //         setState(() {
-  //           canLoop = 1;
-  //         });
-  //       }
-  //     });
-  //   }
-  // }
 }

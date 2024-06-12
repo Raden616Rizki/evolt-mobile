@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserPage extends StatelessWidget {
   const UserPage({Key? key}) : super(key: key);
@@ -32,6 +33,7 @@ class UserPageContent extends StatelessWidget {
     final Map data = ModalRoute.of(context)!.settings.arguments as Map;
     final username = data['username'];
     final email = data['email'];
+    final role = data['role'];
 
     return Column(
       children: [
@@ -324,15 +326,13 @@ class UserPageContent extends StatelessWidget {
                                 ),
                               ),
                               Padding(
-                                padding: EdgeInsets.only(
-                                    left: screenWidth *
-                                        0.25), // Menambahkan padding di sisi kiri
-                                child: const Align(
-                                  alignment: Alignment
-                                      .centerLeft, // Ini akan meratakan teks ke kiri
+                                padding:
+                                    EdgeInsets.only(left: screenWidth * 0.25),
+                                child: Align(
+                                  alignment: Alignment.centerLeft,
                                   child: Text(
-                                    'Aktif',
-                                    style: TextStyle(
+                                    role,
+                                    style: const TextStyle(
                                       color: Colors.white,
                                       fontSize: 11,
                                       fontFamily: 'Microsoft YaHei UI',
@@ -391,7 +391,7 @@ class UserPageContent extends StatelessWidget {
               ),
               Positioned(
                 left: screenWidth * 0.3,
-                top: screenHeight * 0.60,
+                top: screenHeight * 0.58,
                 child: GestureDetector(
                   onTap: () {
                     Navigator.pushNamed(context, '/');
@@ -421,16 +421,21 @@ class UserPageContent extends StatelessWidget {
                 ),
               ),
               Positioned(
-                left: screenWidth * 0.380,
-                top: screenHeight * 0.565,
-                child: const Text(
-                  'Change information?',
-                  style: TextStyle(
-                    color: Color(0xFF648FFF),
-                    fontSize: 10,
-                    fontFamily: 'Microsoft YaHei UI',
-                    fontWeight: FontWeight.w600,
-                    height: 1.2,
+                left: screenWidth * 0.39,
+                top: screenHeight * 0.7,
+                child: GestureDetector(
+                  onTap: () {
+                    launchUrl(Uri.parse('https://wa.me/6281235487842'));
+                  },
+                  child: const Text(
+                    'Change information?',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontFamily: 'Microsoft YaHei UI',
+                      fontWeight: FontWeight.w600,
+                      height: 1.2,
+                    ),
                   ),
                 ),
               ),

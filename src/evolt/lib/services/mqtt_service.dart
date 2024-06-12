@@ -9,7 +9,7 @@ class MQTTService {
   void connect(int idUser) async {
     // Specify a unique client identifier
     client = mqtt.MqttServerClient.withPort(
-        '34.101.227.125', idUser.toString(), 1883);
+        '34.101.39.34', idUser.toString(), 1883);
 
     client.logging(on: true); // Enable logging for more detailed error messages
 

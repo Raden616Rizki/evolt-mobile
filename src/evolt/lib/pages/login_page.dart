@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final response = await http.post(
-      Uri.parse('http://34.101.227.125:8000/api/login/mobile'),
+      Uri.parse('http://34.101.39.34:8000/api/login/mobile'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> testConnection() async {
     try {
-      final response = await http.get(Uri.parse('http://34.101.227.125:8000'));
+      final response = await http.get(Uri.parse('http://34.101.39.34:8000'));
       if (response.statusCode == 200) {
         debugPrint('Connection successful');
       } else {
