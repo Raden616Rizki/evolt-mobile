@@ -8,7 +8,7 @@ void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     initialRoute: '/',
-    routes: {
+    routes: { 
       '/': (context) => const SplashScreen(),
       '/login': (context) => const LoginPage(),
       '/home': (context) => const HomePage(),

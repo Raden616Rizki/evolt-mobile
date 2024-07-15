@@ -94,6 +94,23 @@ class _LoginPageState extends State<LoginPage> {
         debugPrint('Connection successful');
       } else {
         debugPrint('Failed to connect with status: ${response.statusCode}');
+        showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              title: const Text('Koneksi Error'),
+              content: const Text('Tidak terkokesi internet!'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
       }
     } catch (e) {
       debugPrint('Error: $e');
